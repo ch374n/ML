@@ -1,7 +1,6 @@
 from random import randint
 from copy import deepcopy
 
-
 class NQueen:
 
 	def __init__(self, row, col):
@@ -14,7 +13,6 @@ class NQueen:
 		return (self.row == other.row or
 		 		self.col == other.col or
 		 		(abs(self.row - other.row) == abs(self.col - other.col)))
-
 
 class HillClimbing:
 
@@ -40,20 +38,6 @@ class HillClimbing:
 					heuristic += 1
 
 		return heuristic
-
-	def show(self, board):
-		mat = [['_'] * self.N for i in range(self.N)]
-
-		for queen in board: 
-			mat[queen.row][queen.col] = 'Q'
-
-		for row in mat:
-			for el in row: 
-				print(el, end = '\t')
-			print() 
-
-		print()
-
 
 	def next_board(self): 
 		next_board = deepcopy(self.board) 
@@ -91,16 +75,16 @@ class HillClimbing:
 		self.steps_climbed += 1 
 		self.steps_after_last_restart += 1 
 
-		print('next board : ') 
-		self.show(next_board)
+		print('Next board : ') 
+		self.display(next_board)
+		print('heuristic : ', self.find_heuristic(next_board), '\n')
 		return next_board 
 
+	def display(self, board):
+		mat = [['_'] * self.N for i in range(self.N)]
 
-	def display(self):
-		mat = [[0] * self.N for i in range(self.N)]
-
-		for queen in self.board: 
-			mat[queen.row][queen.col] = 1
+		for queen in board: 
+			mat[queen.row][queen.col] = 'Q'
 
 		for row in mat:
 			for el in row: 
@@ -119,7 +103,7 @@ class HillClimbing:
 
 		self.generate_board()
 	
-		self.display() 
+		self.display(self.board) 
 
 		print('initial heuristic : ', self.find_heuristic(self.board)) 
 		i = 0 
@@ -133,7 +117,7 @@ class HillClimbing:
 		print('Number of random restarts : %d' % (self.random_restarts))	
 		print('Steps climbed after last restart : %d' % (self.steps_after_last_restart))
 
-
 hill_climbing = HillClimbing() 
 hill_climbing.main()
+
 
