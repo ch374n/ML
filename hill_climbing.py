@@ -23,11 +23,11 @@ class HillClimbing:
 
 	def generate_board(self):
 
-		self.board = [] 
+		board = [] 
 		for i in range(self.N):
-			self.board.append(NQueen(randint(0, self.N - 1), i))
+			board.append(NQueen(randint(0, self.N - 1), i))
  
-		return self.board 
+		return board 
 
 	def find_heuristic(self, board):
 
@@ -39,18 +39,18 @@ class HillClimbing:
 
 		return heuristic
 
-	def next_board(self): 
-		next_board = deepcopy(self.board) 
-		temp_board = deepcopy(self.board) 
+	def next_board(self, board): 
+		next_board = deepcopy(board) 
+		temp_board = deepcopy(board) 
 		t_heuristic = 0 
-		best_heuristic = self.heuristic 
+		best_heuristic = self.find_heuristic(board) 
 
 
 		for i in range(self.N): 
 			temp_board[i] = NQueen(0, i) 
 
 			if i > 0: 
-				temp_board[i - 1] = NQueen(self.board[i - 1].row, self.board[i - 1].col) 
+				temp_board[i - 1] = NQueen(board[i - 1].row, board[i - 1].col) 
 
 			for j in range(self.N + 1): 	
 				t_heuristic = self.find_heuristic(temp_board)
@@ -64,13 +64,10 @@ class HillClimbing:
 					temp_board[i] = NQueen(j, i) 
 
 
-		if best_heuristic == self.heuristic: 
+		if best_heuristic == self.find_heuristic(board): 
 			self.random_restarts += 1
 			next_board = self.generate_board() 
 			self.steps_after_last_restart = 0 
-
-		else: 
-			self.heuristic = best_heuristic 
 
 		self.steps_climbed += 1 
 		self.steps_after_last_restart += 1 
@@ -101,17 +98,16 @@ class HillClimbing:
 			print('No possible solution for %d queens, please enter another number'%(self.N))
 			self.N = int(input('enter number of queens : '))
 
-		self.generate_board()
+		board = self.generate_board()
 	
-		self.display(self.board) 
+		self.display(board) 
 
-		print('initial heuristic : ', self.find_heuristic(self.board)) 
-		i = 0 
+		print('initial heuristic : ', self.find_heuristic(board)) 
 
-		self.heuristic = self.find_heuristic(self.board) 
-		while(self.heuristic != 0):
-			self.board = self.next_board() 
-			self.heuristic = self.find_heuristic(self.board) 		
+		heuristic = self.find_heuristic(board) 
+		while(heuristic != 0):
+			board = self.next_board(board) 
+			heuristic = self.find_heuristic(board) 		
 		
 		print('Total number of steps climbed : %d' % (self.steps_climbed)) 
 		print('Number of random restarts : %d' % (self.random_restarts))	
@@ -119,5 +115,6 @@ class HillClimbing:
 
 hill_climbing = HillClimbing() 
 hill_climbing.main()
+
 
 
