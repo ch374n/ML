@@ -42,10 +42,10 @@ class HillClimbing:
 		return heuristic
 
 	def show(self, board):
-		mat = [[0] * self.N for i in range(self.N)]
+		mat = [['_'] * self.N for i in range(self.N)]
 
 		for queen in board: 
-			mat[queen.row][queen.col] = 1
+			mat[queen.row][queen.col] = 'Q'
 
 		for row in mat:
 			for el in row: 
